@@ -1,37 +1,69 @@
-## Welcome to GitHub Pages
-
-You can use the [editor on GitHub](https://github.com/AwesomeWithRex/Cat-Generator/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+# Cat Generator
+## Made With React
+Hey! Thanks for using this, to build
+make sure you have Node.js.
+Then type into your command prompt,
 ```
+npm start
+```
+that should work!
+## Main Code
+### App.js
+```js
+import logo from './logo.svg';
+import './App.css';
+import Cat from './Cat';
+import Header from './Header';
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+function App() {
+  return (
+    <div className="App">
+     <Header />
+     <Cat />
+    </div>
+  );
+}
 
-### Jekyll Themes
+export default App;
+```
+### Cat.js
+```js
+import React,{useState} from 'react'
+import './App.css'
+function Cat() {
+    const [url, setUrl] = useState('')
+    function fetch_data(){
+        fetch('https://api.thecatapi.com/v1/images/search').then(res=>{
+            if(res.ok){
+                return res.json();
+            }
+            throw new Error('Request Failed');
+        },networkError=> console.log(networkError.message)
+        ).then(jsonRes=>{
+            setUrl(jsonRes[0].url)
+        })
+    }
+    return (
+        <div className="cat__main">
+            <img src={url} className="cat__img" />
+            <button className="cat__btn" onClick={fetch_data}>Generate!</button>
+        </div>
+    )
+}
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/AwesomeWithRex/Cat-Generator/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+export default Cat
+```
+### Header.js
+```js
+import React from 'react'
+import './App.css'
+function Header() {
+    return (
+        <div className="header__main">
+            <h1>Catz 😺</h1>
+        </div>
+    )
+}
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+export default Header
+```
